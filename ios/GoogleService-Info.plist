@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>876980792289-dupcno62rlh2f5hsa6i2v691h7ua9fv8.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.876980792289-dupcno62rlh2f5hsa6i2v691h7ua9fv8</string>
+	<key>API_KEY</key>
+	<string>AIzaSyAGJlAMJbr20vpwKN5vDme2Vgr3gMBQHmY</string>
+	<key>GCM_SENDER_ID</key>
+	<string>876980792289</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.joel.riderapp</string>
+	<key>PROJECT_ID</key>
+	<string>flutter-uber-app-d5368</string>
+	<key>STORAGE_BUCKET</key>
+	<string>flutter-uber-app-d5368.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:876980792289:ios:615f95c6701a5d23d800a0</string>
+	<key>DATABASE_URL</key>
+	<string>https://flutter-uber-app-d5368-default-rtdb.firebaseio.com</string>
+</dict>
+</plist>
