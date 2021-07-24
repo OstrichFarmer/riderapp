@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:riderapp/AllScreens/loginscreen.dart';
 import 'package:riderapp/AllScreens/mainscreen.dart';
+import 'package:riderapp/AllWidgets/progressDialog.dart';
 import 'package:riderapp/main.dart';
 
 class SignUp extends StatelessWidget {
-
   static const String idScreen = 'signup';
 
   TextEditingController nameTextEditingController = TextEditingController();
@@ -132,19 +132,22 @@ class SignUp extends StatelessWidget {
                     ),
                     ElevatedButton(
                       onPressed: () {
-                        if(nameTextEditingController.text.length <4){
-                          displayToastMessage('Name must at least have 4 characters', context);
-                        }
-                        else if(!emailTextEditingController.text.contains("@")){
-                          displayToastMessage("Email address not valid", context);
-                        }
-                        else if(phoneTextEditingController.text.isEmpty){
-                          displayToastMessage("Phone number is required", context);
-                        }
-                        else if(passwordTextEditingController.text.length <6){
-                          displayToastMessage('Password must have a minimum of 6 characters', context);
-                        }
-                        else {
+                        if (nameTextEditingController.text.length < 4) {
+                          displayToastMessage(
+                              'Name must at least have 4 characters', context);
+                        } else if (!emailTextEditingController.text
+                            .contains("@")) {
+                          displayToastMessage(
+                              "Email address not valid", context);
+                        } else if (phoneTextEditingController.text.isEmpty) {
+                          displayToastMessage(
+                              "Phone number is required", context);
+                        } else if (passwordTextEditingController.text.length <
+                            6) {
+                          displayToastMessage(
+                              'Password must have a minimum of 6 characters',
+                              context);
+                        } else {
                           registerNewUser(context);
                         }
                       },
@@ -187,15 +190,25 @@ class SignUp extends StatelessWidget {
 
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   void registerNewUser(BuildContext context) async {
-    final User firebaseUser = (
-        await _firebaseAuth.createUserWithEmailAndPassword(
-            email: emailTextEditingController.text,
-            password: passwordTextEditingController.text).catchError((errMsg){
-              displayToastMessage("Error: " + errMsg.toString(), context);
-        })).user;
+    showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return ProgressDialog(message: "Creating account please wait");
+        });
 
-    if (firebaseUser !=null)// user created
-        {
+    final User firebaseUser = (await _firebaseAuth
+            .createUserWithEmailAndPassword(
+                email: emailTextEditingController.text,
+                password: passwordTextEditingController.text)
+            .catchError((errMsg) {
+              Navigator.pop(context);
+      displayToastMessage("Error: " + errMsg.toString(), context);
+    }))
+        .user;
+
+    if (firebaseUser != null) // user created
+    {
       //save user info to the database
       Map userDataMap = {
         "name": nameTextEditingController.text.trim(),
@@ -206,17 +219,16 @@ class SignUp extends StatelessWidget {
       userRef.child(firebaseUser.uid).set(userDataMap);
       displayToastMessage("Account created successfully", context);
 
-      Navigator.pushNamedAndRemoveUntil(context, MainScreen.idScreen, (route) => false);
-    }
-    else{
+      Navigator.pushNamedAndRemoveUntil(
+          context, MainScreen.idScreen, (route) => false);
+    } else {
+      Navigator.pop(context);
       // display error message
       displayToastMessage("unable  to create new user", context);
     }
   }
-
 }
 
-displayToastMessage (String message, BuildContext context) {
+displayToastMessage(String message, BuildContext context) {
   Fluttertoast.showToast(msg: message);
 }
-
