@@ -2,8 +2,10 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:provider/provider.dart';
 import 'package:riderapp/AllWidgets/divider.dart';
 import 'package:riderapp/Assistant/assistantMethods.dart';
+import 'package:riderapp/DataHandler/appData.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({Key key}) : super(key: key);
@@ -22,19 +24,23 @@ class _MainScreenState extends State<MainScreen> {
 
   Position currentPosition;
   var geoLocator = Geolocator();
-  double bottomPaddingOfMap= 0;
+  double bottomPaddingOfMap = 0;
 
-  void locatePosition() async{
-    Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+  void locatePosition() async {
+    Position position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high);
     currentPosition = position;
 
     LatLng latLatPosition = LatLng(position.latitude, position.longitude);
 
-    CameraPosition cameraPosition = new CameraPosition(target: latLatPosition, zoom: 14);
-    newGoogleMapController.animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
+    CameraPosition cameraPosition =
+        new CameraPosition(target: latLatPosition, zoom: 14);
+    newGoogleMapController
+        .animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
 
-    String address = await AssistantMethods.searchCoordinateAddress(position);
-    print ("This is your address :: " + address);
+    String address =
+        await AssistantMethods.searchCoordinateAddress(position, context);
+    print("This is your address :: " + address);
   }
 
   static final CameraPosition _kGooglePlex = CameraPosition(
@@ -145,24 +151,28 @@ class _MainScreenState extends State<MainScreen> {
             top: 45.0,
             left: 22.0,
             child: GestureDetector(
-              onTap: (){
+              onTap: () {
                 scaffoldKey.currentState.openDrawer();
               },
               child: Container(
                 decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(22.0),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black,
-                        blurRadius: 6.0,
-                        spreadRadius: 0.5,
-                        offset: Offset(0.7, 0.7),
-                      ),
-                    ],),
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(22.0),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black,
+                      blurRadius: 6.0,
+                      spreadRadius: 0.5,
+                      offset: Offset(0.7, 0.7),
+                    ),
+                  ],
+                ),
                 child: CircleAvatar(
                   backgroundColor: Colors.white,
-                  child: Icon(Icons.menu, color: Colors.black,),
+                  child: Icon(
+                    Icons.menu,
+                    color: Colors.black,
+                  ),
                   radius: 20.0,
                 ),
               ),
@@ -252,7 +262,12 @@ class _MainScreenState extends State<MainScreen> {
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text("Add Home"),
+                            Text(Provider.of<AppData>(context).pickUpLocation !=
+                                    null
+                                ? Provider.of<AppData>(context)
+                                    .pickUpLocation
+                                    .placeName
+                                : "Add Home"),
                             SizedBox(
                               height: 4.0,
                             ),
